@@ -9,8 +9,11 @@ const login = (req, res) => {
         loginData.password=(req.cookies.password)?req.cookies.password:undefined
     res.render('login', {
         title: 'login page',
+        message:req.flash('message'),
+        message2:req.flash('message2'),
             data1:loginData,
-            data:req.user
+            data:req.user,
+
     })
 }
 
@@ -18,7 +21,8 @@ const login = (req, res) => {
 const register = (req, res) => {
     res.render('register', {
         title: 'register page',
-        data:req.user
+        data:req.user,
+        message2:req.flash('message2')
     })
 }
 
@@ -46,7 +50,8 @@ const registercreate = (req, res) => {
 
     }).save((err, data) => {
         if (!err) {
-            console.log('user register successfully');
+            // console.log('user register successfully');
+            req.flash('message','user added')
             res.redirect('/login')
         } else {
             console.log(err, 'user not added');
@@ -76,11 +81,13 @@ const logincreate=(req,res)=>{
                 console.log(data,'user login successfully');
                 res.redirect('/dashboard')
             } else {
-                console.log('invalid password');
+                // console.log('invalid password');
+                req.flash('message2','invalied password')
                 res.redirect('/login')
             }
         } else {
-            console.log('invalid email');
+            // console.log('invalid email');
+            req.flash('message2','invalied email')
             res.redirect('/login')
         }
     })
